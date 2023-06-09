@@ -19,26 +19,21 @@ public class Main {
         }
 
 
-        Stream<Person> children1 = persons.stream();
-        Stream<Person> children2 = children1.filter(a -> a.getAge() < 18);
-        long count = children2.count();
+        Stream<Person> children = persons.stream().filter(a -> a.getAge() < 18);
+        long count = children.count();
         System.out.println(count); // кол-во людей младше 18 лет
 
-        Stream<Person> military1 = persons.stream();
-        Stream<Person> military2 = military1.filter(a -> a.getSex() == Sex.MAN);
-        Stream<Person> military3 = military2.filter(a -> a.getAge() > 18 && a.getAge() < 27);
-//        List<Person> a = military3.collect(Collectors.toList()); //проверка
-//        System.out.println(a);//проверка
-        Stream<String> military4 = military3.map(Person::getFamily);
-        List<String> military5 = military4.collect(Collectors.toList());
-        System.out.println(military5); // список призывников
+        List<String> military = persons.stream().filter(a -> a.getSex() == Sex.MAN)
+                .filter(a -> a.getAge() > 18 && a.getAge() < 27)
+                .map(Person::getFamily)
+                .toList();
+        System.out.println(military); // список призывников
 
-        Stream<Person> labor1 = persons.stream();
-        Stream<Person> labor2 = labor1.filter(a -> a.getEducation() == Education.HIGHER);
-        Stream<Person> labor3 = labor2.filter(a -> a.getSex() == Sex.MAN && a.getAge() > 18 && a.getAge() < 65 || a.getSex() == Sex.WOMAN && a.getAge() > 18 && a.getAge() < 60);
-        Stream<Person> labor4 = labor3.sorted(Comparator.comparing(Person::getFamily));
-        List<Person> labor5 = labor4.collect(Collectors.toList());
-        System.out.println(labor5); //отсортированный по фамилии список потенциально работоспособных людей
+        List<Person> labor = persons.stream().filter(a -> a.getEducation() == Education.HIGHER)
+                .filter(a -> a.getSex() == Sex.MAN && a.getAge() > 18 && a.getAge() < 65 || a.getSex() == Sex.WOMAN && a.getAge() > 18 && a.getAge() < 60)
+                .sorted(Comparator.comparing(Person::getFamily))
+                .collect(Collectors.toList());
+        System.out.println(labor); //отсортированный по фамилии список потенциально работоспособных людей
 
 
     }
